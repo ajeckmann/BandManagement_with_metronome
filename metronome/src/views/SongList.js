@@ -176,7 +176,8 @@ const SongList = ({ props }) => {
                     </div>
                 </nav>
 
-            <h1>Welcome to our Song Page</h1>
+            <h1>Welcome to our Song Page.</h1>
+            <h3>Click on a song for more info</h3>
             
             <Link to="song/new">Add a Song</Link>
 
