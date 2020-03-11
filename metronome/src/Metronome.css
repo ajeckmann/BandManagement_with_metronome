@@ -1,0 +1,59 @@
+
+.metronome{
+    text-align: center;
+    margin-top: 300px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+
+h1{
+    margin-top:50px;
+    color:black;
+    text-align: center;
+}
+
+.bandmembers{
+    text-decoration: none;
+    color:black;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size:130%
+    
+}
+
+.containerr{
+
+    background-image: url(./images/band.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    
+   
+    
+
+}
+.bandmembersrow{
+    margin-top: 75px;
+    height: 100vh;
+}
+.container{
+    padding-top:none;
+}
+
+.specialcolumn{
+    
+    background-color: none;
+    
+    
+    
+    
+    
+}
+
+#songrow{
+height: 100vh;
+}
+
+.card-body{
+    background-color: transparent;
+}
