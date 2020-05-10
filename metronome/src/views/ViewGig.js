@@ -3,6 +3,7 @@ import axios from 'axios';
 import { navigate, Link } from '@reach/router';
 import ViewMusician from './ViewMusician';
 import Axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.css';
 
 
 const ViewGig = ({ id }) => {
@@ -123,6 +124,9 @@ const ViewGig = ({ id }) => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/giglist"> Upcoming Gigs</Link>
                         </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/viewmetronome"> Metronome</Link>
+                        </li>
 
 
                     </ul>
@@ -132,30 +136,33 @@ const ViewGig = ({ id }) => {
 
             <div className="container-fluid">
                 <button className="btn btn-success" onClick={() => navigate("/giglist")}>Back</button>
-                <div className="row-justify-content">
-                    <div className="col"></div>
-
-
-                    <h1>Gig: {gigToview.event}</h1>
-                    <h3>Gig Date: {gigToview.date}</h3>
-                    <h3>Gig Time: {gigToview.time}</h3>
-
-
+                <div className="row-justify-content-center">
+                    <h1>{gigToview.event}</h1>
                 </div>
+                <div className="row-justify-content-center">
+                    <div className="col-md-4">
+                        <h3>Gig Date: {gigToview.date}</h3>
+                    </div>
+                    <div className="col-md-4">
+                        <h3>Gig Time: {gigToview.time}</h3>
+                    </div>
+                </div>
+
+
+
 
 
 
                 <div className="row justify-content-between">
 
+                    <div className="col-md-3">
 
-
-                    <div className="col-md-4">
-                        
-                            <div class="card mb-5">
-                                <div class="card-body">
-                                    <h5 class="card-title">Add a song</h5>
-                                    <form onSubmit={(e) => handleSongSubmit(e)}>
-                                        <div className="form group">
+                        <div class="card mb-3 shadow-lg">
+                            <div class="card-body">
+                                <h5 class="card-title">Add a song</h5>
+                                <form onSubmit={(e) => handleSongSubmit(e)}>
+                                    <div className="row justify-content-between">
+                                        <div className="col-3">
                                             <select name="song" onChange={(e) => onChangeHandler(e)} >
                                                 <option disabled selected value> Select</option>
                                                 {
@@ -166,44 +173,48 @@ const ViewGig = ({ id }) => {
                                                     })
                                                 }
                                             </select>
-                                            <input type="submit" value="Add Song" />
                                         </div>
-                                        <button class="btn btn-primary">Add</button>
-                                    </form>
-                                </div>
+                                        <div className="col-3">
+                                            <input className="btn btn-info" type="submit" value="Add Song" />
+                                        </div>
+
+                                    </div>
+                                </form>
+
                             </div>
-                        
-
-
-
-
-
-
+                        </div>
                     </div>
-
                     <div className="col-md-4 ">
+                        <div className="card">
+                            <div className="card-header"><h3>SongList:</h3></div>
+                            <div className="card-body">
+                                <ol>
+                                    {
+                                        gigToview.songs ?
+                                            gigToview.songs.map((s, idx) => {
+                                                return (
+                                                    <div className="row justify-content-center">
+                                                        <div className="col-9 text-left">
+                                                            <li key={idx}>
+                                                                {s.title}</li><br />
+                                                        </div>
+                                                        <div className="col-3">
+                                                            <button className=" btn btn-warning" onClick={(e) => removeSongFromGig(idx)}>Remove</button>
+                                                        </div>
+                                                    </div>
 
-                        <h3>SongList:</h3>
-                        <table className="table table-striped">
-                        {
-                            gigToview.songs ?
-                                gigToview.songs.map((s, idx) => {
-                                    return <tr>
-                                        <td key={idx}>{s.title}</td>
-                                        <td><button onClick={(e) => removeSongFromGig(idx)}>Remove</button></td>
-                                    
-                                    
-                                    </tr>
 
+                                                )
+                                            }) :
+                                            null
+                                    }
+                                </ol>
+                            </div>
+                        </div>
 
-                                }) :
-                                null
-                        }
-                        </table>
-                        
                     </div>
 
-                    
+
 
 
 
@@ -228,7 +239,7 @@ const ViewGig = ({ id }) => {
                         <form onSubmit>
                             <label>Enter Comment: </label><br />
                             <textarea /><br />
-                            <input className="btn btn-success" type="submit" value="Add" />
+                            <input className="btn btn-success " type="submit" value="Add" />
                         </form>
 
                     </div>

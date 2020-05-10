@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { Link, navigate } from '@reach/router';
+import 'bootstrap/dist/css/bootstrap.css';
 import '../Metronome.css';
 
 
@@ -18,9 +19,6 @@ const MusicianList = ({ props }) => {
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
-
-
-
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item active">
@@ -35,18 +33,16 @@ const MusicianList = ({ props }) => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/giglist"> Upcoming Gigs</Link>
                         </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/viewmetronome"> Metronome</Link>
+                        </li>
                     </ul>
-
                 </div>
             </nav>
-
             <div className="container-fluid containerr  ">
-
                 <div className="row justify-content-center">
                     <h1>Welcome to our Musician Page</h1>
                 </div>
-
-
                 <div classname="row justify-content-center " >
                     <Link to="musician/new">Add Band Member</Link><br />
 

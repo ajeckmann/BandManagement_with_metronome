@@ -12,7 +12,7 @@ const SongList = ({ props }) => {
     const [songs, setSongs] = useState([]);
     const [musicians, setMusicians] = useState([]);
     const [errors, setErrors] = useState([]);
-    const [singerToupdate, setSingerToUpdate]=useState({})
+    const [singerToupdate, setSingerToUpdate] = useState({})
     //problem was the semicolons; singertoupdate was not defined at all. therefore the singertoupdate id wasn't defined.
 
     useEffect(() => {
@@ -96,60 +96,60 @@ const SongList = ({ props }) => {
     }
 
 
-   
 
 
-        
 
 
-    
 
-    const onChangeHandler=(e, idx)=>{
+
+
+
+    const onChangeHandler = (e, idx) => {
         e.preventDefault();
         let singerId = e.target.value;
-        let singer = {...musicians[singerId]}
+        let singer = { ...musicians[singerId] }
         //wait wait wait wait.....can't only an index value go in the brackets??? how is an id going in there??
         console.log(singer);
         setSingerToUpdate(singer);
-        console.log({singerToupdate});
-    
-        
+        console.log({ singerToupdate });
+
+
     }
 
-    const handleSongSubmit=(e, idx)=>{
+    const handleSongSubmit = (e, idx) => {
         e.preventDefault();
         console.log(idx);
-       
-        
-        let song = {...songs[idx]};
+
+
+        let song = { ...songs[idx] };
         console.log(song);
         console.log('horse');
         console.log(singerToupdate._id);
         Axios.put(`http://localhost:8000/api/musicians/addsong/${singerToupdate._id}`, song)
-        .then(navigate(`/musicians/${singerToupdate._id}`))
-        
-        .catch(err=>console.log(err.response));
+            .then(navigate(`/musicians/${singerToupdate._id}`))
 
-    
-
-    // Axios.get(`http://localhost:8000/api/songs/${id}`)
-    // .then(console.log(songToedit))
-    // .then(res=>setSongToEdit(res.data))
+            .catch(err => console.log(err.response));
 
 
 
-    // .then(setSongToEdit({
+        // Axios.get(`http://localhost:8000/api/songs/${id}`)
+        // .then(console.log(songToedit))
+        // .then(res=>setSongToEdit(res.data))
 
-    //     ...songToedit,
-    //     [songToedit.status]: "needswork"
-    // }))
-    // .then(console.log(songToedit.status))
 
-    // .then(Axios.put(`http://localhost:8000/api/songs/${id}`,songToedit))
 
-    // .then(res=>navigate(`/songlist/`))
-    // .catch(err=>{
-    //     setErrors(err.response.data)});
+        // .then(setSongToEdit({
+
+        //     ...songToedit,
+        //     [songToedit.status]: "needswork"
+        // }))
+        // .then(console.log(songToedit.status))
+
+        // .then(Axios.put(`http://localhost:8000/api/songs/${id}`,songToedit))
+
+        // .then(res=>navigate(`/songlist/`))
+        // .catch(err=>{
+        //     setErrors(err.response.data)});
 
     }
 
@@ -158,27 +158,30 @@ const SongList = ({ props }) => {
         <div>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
 
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav mr-auto">
-                            <li className="nav-item active">
-                                <Link className="nav-link" to="/">Home</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/musicianlist">Band Members</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/songlist">Songs</Link>
-                            </li>
-                            <li className="nav-item">
+                <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul className="navbar-nav mr-auto">
+                        <li className="nav-item active">
+                            <Link className="nav-link" to="/">Home</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/musicianlist">Band Members</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/songlist">Songs</Link>
+                        </li>
+                        <li className="nav-item">
                             <Link className="nav-link" to="/giglist"> Upcoming Gigs</Link>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/viewmetronome"> Metronome</Link>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
 
             <h1>Welcome to our Song Page.</h1>
             <h3>Click on a song for more info</h3>
-            
+
             <Link to="song/new">Add a Song</Link>
 
             <table className="table">
@@ -204,18 +207,18 @@ const SongList = ({ props }) => {
 
 
                                     <td>
-                                        <form onSubmit = {(e)=>handleSongSubmit(e,idx)}>
-                                            <select name="musician" onChange={(e) => onChangeHandler(e)}> 
+                                        <form onSubmit={(e) => handleSongSubmit(e, idx)}>
+                                            <select name="musician" onChange={(e) => onChangeHandler(e)}>
                                                 {
-                                                    musicians.map((m, idx)=>{
-                                                        return(
-                                                            
+                                                    musicians.map((m, idx) => {
+                                                        return (
+
                                                             <option value={idx} key={idx} >{m.firstName}</option>
                                                         );
                                                     })
                                                 }
-                                                </select>
-                                                <input type="submit" value="Add Singer"/>
+                                            </select>
+                                            <input type="submit" value="Add Singer" />
                                         </form>
 
                                     </td>
@@ -266,7 +269,7 @@ const SongList = ({ props }) => {
                                 </tr>
                             )
                         }
-                      )
+                        )
                     }
 
 

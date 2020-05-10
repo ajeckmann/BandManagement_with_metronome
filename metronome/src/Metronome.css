@@ -26,6 +26,7 @@ h1{
     background-image: url(./images/band.png);
     background-repeat: no-repeat;
     background-size: cover;
+    height: 100vh;
     
     
    
@@ -49,11 +50,25 @@ h1{
     
     
 }
-
+.addgigbutton{
+    
+    margin-left: 400px;
+}
 #songrow{
 height: 100vh;
 }
 
 .card-body{
     background-color: transparent;
+}
+
+
+.metronomebutton{
+color: red;
+}
+
+.gig_names_style{
+    color: black;
+    font-weight: 900;        
+    font-size: 150%;
 }
