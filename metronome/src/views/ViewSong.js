@@ -1,115 +1,134 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {navigate, Link} from '@reach/router';
+import { navigate, Link } from '@reach/router';
 
-const ViewSong=({id})=>{
+const ViewSong = ({ id }) => {
 
-const [songToview, setSongToView]=useState({});
-const [newComment, setNewComment]= useState({});
-const [isCommented, setIsCommented]= useState("false");
-const [errors, setErrors]=useState({
-    
-    description:""
-})
+    const [songToview, setSongToView] = useState({});
+    const [newComment, setNewComment] = useState({});
+    const [isCommented, setIsCommented] = useState("false");
+    const [isRemoved, setIsremoved] = useState(false);
+    const [errors, setErrors] = useState({
 
-useEffect(()=>{
-    axios.get(`http://localhost:8000/api/songs/${id}`)
-    .then(res=>{
-        setSongToView(res.data)
+        description: ""
     })
-    
-    .catch(err=>navigate('/songs'));
-    console.log(songToview)
-}, [isCommented]);
 
-const style5={
-    width:'30%',
-    height:'200px'
-}
- const handleChange=(e)=>{
-    e.preventDefault()
-    setNewComment({
-        description: e.target.value
-    })
-    
+    useEffect(() => {
+        axios.get(`http://localhost:8000/api/songs/${id}`)
+            .then(res => {
+                setSongToView(res.data)
+            })
 
- }
+            .catch(err => navigate('/songs'));
+        console.log(songToview)
+    }, [isCommented]);
 
- const handleSubmit=(e)=>{
-    e.preventDefault();
-    axios.put(`http://localhost:8000/api/addcommenttosong/${id}`, newComment)
-        .then(
-            setNewComment({
-                description: ""
-            
-            
-        }))
-        .then(res=>{setIsCommented(!isCommented)})
-        .catch(err => setErrors(err.response.data));
-
- }
-
-return(
-
-<div >
-
-<nav className="navbar navbar-expand-lg navbar-light bg-light">
+    const style5 = {
+        width: '30%',
+        height: '200px'
+    }
+    const handleChange = (e) => {
+        e.preventDefault()
+        setNewComment({
+            description: e.target.value
+        })
 
 
+    }
 
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav mr-auto">
-                <li className="nav-item active">
-                    <Link className="nav-link" to="/">Home</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link" to="/musicianlist">Band Members</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link" to="/songlist">Songs</Link>
-                </li>
-                <li className="nav-item">
-                <Link className="nav-link" to="/giglist"> Upcoming Gigs</Link>
-                </li>
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.put(`http://localhost:8000/api/addcommenttosong/${id}`, newComment)
+            .then(
+                setNewComment({
+                    description: ""
 
 
-            </ul>
+                }))
+            .then(res => { setIsCommented(!isCommented) })
+            .catch(err => setErrors(err.response.data));
 
-        </div>
+    }
+
+    const removeCommentfromSong = (idx) => {
+        let commenttoremove = { ...songToview.songcomments[idx] }
+        console.log(commenttoremove);
+        axios.put(`http://localhost:8000/api/deletecommentfromsong/${songToview._id}`, commenttoremove)
+            .then(
+                res => {
+                    setIsCommented(!isCommented);
+                })
+            .catch(err => console.log(err.response))
+    }
+
+    return (
+
+        <div >
+
+            <nav className="navbar navbar-expand-lg navbar-light bg-light">
 
 
-</nav>
-    <div className=" containerr Container-fluid">
-            <div className="center-block">
-                <h2>{songToview.title}</h2>
-                <h3>Status: {songToview.status}</h3>
-                <h3>Singer(s): {songToview.songvocalist}</h3>
-                <div className="container">
-        
-                    <form onSubmit = {(e)=>handleSubmit(e)}>
-                        <label>Enter Comment: </label><br/>
-                        <textarea name="description" value={newComment.description} onChange= {(e)=>handleChange(e)}/><br/>
-                        <input className= "btn btn-success" type="submit" value="Add"/>
-                    </form>
 
-                </div>        
-                <h3>Comments:</h3>
-                {
-                    songToview.songcomments  ? 
-                    songToview.songcomments.map((c,idx)=>{
-                        return <p key={idx}>{c.description}</p>
-                    }):
-                    null
-                }
+                <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul className="navbar-nav mr-auto">
+                        <li className="nav-item active">
+                            <Link className="nav-link" to="/">Home</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/musicianlist">Band Members</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/songlist">Songs</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/giglist"> Upcoming Gigs</Link>
+                        </li>
+
+
+                    </ul>
+
+                </div>
+
+
+            </nav>
+            <div className=" containerr Container-fluid">
+                <div className="center-block">
+                    <h2>{songToview.title}</h2>
+                    <h3>Status: {songToview.status}</h3>
+                    <h3>Singer(s): {songToview.songvocalist}</h3>
+                    <div className="container">
+
+                        <form onSubmit={(e) => handleSubmit(e)}>
+                            <label>Enter Comment: </label><br />
+                            <textarea name="description" value={newComment.description} onChange={(e) => handleChange(e)} /><br />
+                            <input className="btn btn-success" type="submit" value="Add" />
+                        </form>
+
+                    </div>
+                    <h3>Comments:</h3>
+                    {
+                        songToview.songcomments ?
+                            songToview.songcomments.map((c, idx) => {
+                                return <div className="row justify-content-center"  >
+                                    <div className="col-2" key={idx}>{c.description}</div>
+                                    <div className="col-2">
+                                        <button onClick={(e) => removeCommentfromSong(idx)}>remove</button>
+                                    </div>
+
+
+                                </div>
+                            }) :
+                            null
+                    }
+
+                </div>
+
+
 
             </div>
-  
+        </div>
 
-   
-    </div>
-</div>
-
-);
+    );
 }
 
 
