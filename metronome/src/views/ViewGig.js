@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Date } from 'react';
 import axios from 'axios';
 import { navigate, Link } from '@reach/router';
 import ViewMusician from './ViewMusician';
-import Axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
+import { black } from 'color-name';
 
 
 const ViewGig = ({ id }) => {
@@ -12,6 +12,17 @@ const ViewGig = ({ id }) => {
     const [SongtoAdd, setSongToAdd] = useState([]);
     const [isAdded, setIsAdded] = useState(false);
     const [isRemoved, setIsremoved] = useState(false);
+    const [newRemark, setNewRemark] = useState({});
+    const [isRemarked, setIsRemarked] = useState("false");
+    const [errors, setErrors] = useState({
+
+        description: ""
+    })
+    const date = gigToview.date;
+
+
+
+
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/gigs/${id}`)
@@ -27,7 +38,7 @@ const ViewGig = ({ id }) => {
 
 
 
-    }, [isAdded, isRemoved]);
+    }, [isAdded, isRemoved, isRemarked]);
 
 
 
@@ -52,12 +63,6 @@ const ViewGig = ({ id }) => {
         let songtoadd = { ...songlist[songId] }
         setSongToAdd(songtoadd);
         console.log(songtoadd);
-
-
-
-
-
-
     }
 
     const handleSongSubmit = (e) => {
@@ -83,7 +88,6 @@ const ViewGig = ({ id }) => {
             .then(res => {
                 navigate('/giglist');
             })
-
     }
 
 
@@ -95,13 +99,31 @@ const ViewGig = ({ id }) => {
                 res => {
                     setIsremoved(!isRemoved);
                 })
-
-
             .then(setIsremoved(true))
-
             .catch(err => console.log(err.response))
+    }
+
+    const handleCommentChange = (e) => {
+        e.preventDefault()
+        setNewRemark({
+            description: e.target.value
+        })
+    }
+
+    const handleCommentSubmit = (e) => {
+        e.preventDefault();
+        axios.put(`http://localhost:8000/api/addcommenttogig/${id}`, newRemark)
+            .then(
+                setNewRemark({
+                    description: ""
+                }))
+            .then(res => { setIsRemarked(!isRemarked) })
+            .then(console.log(newRemark))
+            .catch(err => setErrors(err.response.data));
 
     }
+
+
 
 
     return (
@@ -127,141 +149,141 @@ const ViewGig = ({ id }) => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/viewmetronome"> Metronome</Link>
                         </li>
-
-
                     </ul>
-
                 </div>
             </nav>
 
             <div className="container-fluid">
                 <button className="btn btn-success" onClick={() => navigate("/giglist")}>Back</button>
-                <div className="row-justify-content-center">
+                <div className="row justify-content-center">
                     <h1>{gigToview.event}</h1>
                 </div>
-                <div className="row-justify-content-center">
-                    <div className="col-md-4">
-                        <h3>Gig Date: {gigToview.date}</h3>
+                <div className="row justify-content-around">
+                    <div className="col-lg-4 text-right">
+                        <h3 >Date: {date}</h3>
                     </div>
-                    <div className="col-md-4">
-                        <h3>Gig Time: {gigToview.time}</h3>
+                    <div className="col-lg-4 text-left">
+                        <h3>Time: {gigToview.time}</h3>
                     </div>
                 </div>
-
-
-
-
-
-
-                <div className="row justify-content-between">
-
-                    <div className="col-md-3">
-
-                        <div class="card mb-3 shadow-lg">
-                            <div class="card-body">
-                                <h5 class="card-title">Add a song</h5>
-                                <form onSubmit={(e) => handleSongSubmit(e)}>
-                                    <div className="row justify-content-between">
-                                        <div className="col-3">
-                                            <select name="song" onChange={(e) => onChangeHandler(e)} >
-                                                <option disabled selected value> Select</option>
-                                                {
-                                                    songlist.map((s, idx) => {
-                                                        return (
-                                                            <option value={idx} key={idx}>{s.title}</option>
-                                                        );
-                                                    })
-                                                }
-                                            </select>
-                                        </div>
-                                        <div className="col-3">
-                                            <input className="btn btn-info" type="submit" value="Add Song" />
-                                        </div>
-
+                <div className="row justify-content-around gig_info_row" style={{ marginTop: 50 }}>
+                    <div className="col-sm-6 gig_page_divider">
+                        <div className="row justify-content-center">
+                            <div className="col-sm-6">
+                                <div class="card mb-4 shadow-lg">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Add a Comment</h5>
+                                        <form onSubmit={(e) => handleCommentSubmit(e)}>
+                                            <textarea className="gig_comment" name="description" value={newRemark.description} onChange={(e) => handleCommentChange(e)} /><br />
+                                            <input className="btn btn-info " type="submit" value="Post Comment" />
+                                        </form>
                                     </div>
-                                </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row justify-content-center">
+                            <div className="col-sm-10">
+                                <div class="card mb-4 shadow-lg">
+                                    <div className="card-header"><h3>Comments:</h3></div>
+                                    <div className="card-body">
+                                        <ol>
+                                            {
+                                                gigToview.gigcomments ?
+                                                    gigToview.gigcomments.map((g, idx) => {
+                                                        return (
+                                                            <div className="row justify-content-center">
+                                                                <div className="col-9 text-left">
+                                                                    <li key={idx}>
+                                                                        {g.description}</li><br />
+                                                                </div>
+                                                                <div className="col-sm-3">
+                                                                    <button className=" btn btn-warning" onClick={(e) => removeSongFromGig(idx)}>Remove</button>
+                                                                </div>
+                                                            </div>
 
+
+                                                        )
+                                                    }) :
+                                                    null
+                                            }
+                                        </ol>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-4 ">
-                        <div className="card">
-                            <div className="card-header"><h3>SongList:</h3></div>
-                            <div className="card-body">
-                                <ol>
-                                    {
-                                        gigToview.songs ?
-                                            gigToview.songs.map((s, idx) => {
-                                                return (
-                                                    <div className="row justify-content-center">
-                                                        <div className="col-9 text-left">
-                                                            <li key={idx}>
-                                                                {s.title}</li><br />
-                                                        </div>
-                                                        <div className="col-3">
-                                                            <button className=" btn btn-warning" onClick={(e) => removeSongFromGig(idx)}>Remove</button>
-                                                        </div>
-                                                    </div>
+
+                    <div className="col-md-6 ">
+                        <div className="row justify-content-center">
+                            <div className="col-sm-6">
+                                <div class="card shadow-lg">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Add a song</h5>
+                                        <form onSubmit={(e) => handleSongSubmit(e)}>
+                                            <div className="row justify-content-around">
+                                                <div className="col-sm-7">
+                                                    <select className="form-control" name="song" onChange={(e) => onChangeHandler(e)} >
+                                                        <option disabled selected value> Select</option>
+                                                        {
+                                                            songlist.map((s, idx) => {
+                                                                return (
+                                                                    <option value={idx} key={idx}>{s.title}</option>
+                                                                );
+                                                            })
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <div className="col-sm-5">
+                                                    <input className="btn btn-info btn-sm" type="submit" value="Add Song" />
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><br />
+                        <div className="row justify-content-center">
+                            <div className="col-sm-10">
+                                <div className="card">
+                                    <div className="card-header"><h3>SongList:</h3></div>
+                                    <div className="card-body">
+                                        <ol>
+                                            {
+                                                gigToview.songs ?
+                                                    gigToview.songs.map((s, idx) => {
+                                                        return (
+                                                            <div className="row justify-content-center">
+                                                                <div className="col-9 text-left">
+                                                                    <li key={idx}>
+                                                                        {s.title}</li><br />
+                                                                </div>
+                                                                <div className="col-sm-3">
+                                                                    <button className=" btn btn-warning" onClick={(e) => removeSongFromGig(idx)}>Remove</button>
+                                                                </div>
+                                                            </div>
 
 
-                                                )
-                                            }) :
-                                            null
-                                    }
-                                </ol>
+                                                        )
+                                                    }) :
+                                                    null
+                                            }
+                                        </ol>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
                     </div>
+                </div><br />
+
+                <div className="row justify-content-center">
 
 
 
-
-
-
+                    <button className="btn btn-danger remove_gig_button" onClick={(e) => removeGig(id)}>Remove Gig</button>
                 </div>
-
-
-
-
-
-
-
-
-                <div>
-
-                    <h4>Comments:</h4>
-                    <button className="btn btn-danger" onClick={(e) => removeGig(id)}>Remove Gig</button>
-
-
-
-                    <div className="col-xs-4">
-                        <form onSubmit>
-                            <label>Enter Comment: </label><br />
-                            <textarea /><br />
-                            <input className="btn btn-success " type="submit" value="Add" />
-                        </form>
-
-                    </div>
-                </div>
-
-
             </div>
 
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     );
 

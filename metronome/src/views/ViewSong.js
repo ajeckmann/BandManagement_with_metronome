@@ -42,8 +42,6 @@ const ViewSong = ({ id }) => {
             .then(
                 setNewComment({
                     description: ""
-
-
                 }))
             .then(res => { setIsCommented(!isCommented) })
             .catch(err => setErrors(err.response.data));

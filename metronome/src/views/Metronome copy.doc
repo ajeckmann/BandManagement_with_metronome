@@ -10,17 +10,16 @@ import Dooo from '../Dooo.m4a';
 
 
 const Metronome = (props) => {
-    const [bpm, setbpm] = useState(91);
+    const [bpm, setbpm] = useState([90]);
     const [isPlaying, setIsPlaying] = useState(false);
 
 
     var clickone = new Audio(click1);
-
-    let clicktwo = new Audio(click2);
-    let clickthree = new Audio(Dooo);
-    let clickfour = new Audio(fa);
-    let count = 0;
-    const [timerID, setTimerID] = useState();
+    var clicktwo = new Audio(click2);
+    var clickthree = new Audio(Dooo);
+    var clickfour = new Audio(fa);
+    var count = 0;
+    var timerID;
 
     const soundBeat = () => {
         if (count % 2 == 0) {
@@ -28,7 +27,7 @@ const Metronome = (props) => {
             count++;
         }
         else {
-            clicktwo.play();
+            clickone.play();
             count++;
         }
 
@@ -37,7 +36,7 @@ const Metronome = (props) => {
         e.preventDefault();
 
         if (isPlaying == false) {
-            setTimerID(setInterval(soundBeat, (60 / bpm) * 1000));
+            timerID = setInterval(soundBeat, (60 / bpm) * 1000);
             setIsPlaying(true);
         }
         if (isPlaying == true) {
