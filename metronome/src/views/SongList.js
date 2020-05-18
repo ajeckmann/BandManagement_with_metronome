@@ -189,7 +189,7 @@ const SongList = ({ props }) => {
                     <tr>
                         <th><h3>Song</h3></th>
                         <th><h3>Artist</h3></th>
-                        <th><h3>External Links</h3></th>
+                        <th><h3>Singer</h3></th>
                         <th><h3>Status</h3></th>
                     </tr>
 
@@ -208,7 +208,8 @@ const SongList = ({ props }) => {
 
                                     <td>
                                         <form onSubmit={(e) => handleSongSubmit(e, idx)}>
-                                            <select name="musician" onChange={(e) => onChangeHandler(e)}>
+                                            <select className="song_status btn btn-lg btn-outline-dark" name="musician" onChange={(e) => onChangeHandler(e)}>
+                                                <option disabled selected value> Select Singer</option>
                                                 {
                                                     musicians.map((m, idx) => {
                                                         return (
@@ -218,7 +219,7 @@ const SongList = ({ props }) => {
                                                     })
                                                 }
                                             </select>
-                                            <input type="submit" value="Add Singer" />
+                                            <input className="song_status btn btn-outline-success" type="submit" value="Add Singer" />
                                         </form>
 
                                     </td>
@@ -227,36 +228,36 @@ const SongList = ({ props }) => {
                                     {s.status === 'new' ?
                                         <td>
 
-                                            <button onClick={(e) => handleClickNeedsWork(e, idx)} >Needs Work</button>
-                                            <button onClick={(e) => handleClickReady(e, idx)}>Ready</button>
-                                            <button onClick={(e) => handleClickNew(e, idx)} style={style3}>New</button>
+                                            <button className="song_status btn btn-outline-dark" onClick={(e) => handleClickNeedsWork(e, idx)} >Needs Work</button>
+                                            <button className="song_status btn btn-outline-dark" onClick={(e) => handleClickReady(e, idx)}>Ready</button>
+                                            <button className="song_status btn btn-lg" onClick={(e) => handleClickNew(e, idx)} style={style3}>New</button>
                                         </td> :
                                         (s.status == "needswork" ?
 
                                             <td>
 
-                                                <button onClick={(e) => handleClickNeedsWork(e, idx)} style={style1}>Needs Work</button>
-                                                <button onClick={(e) => handleClickReady(e, idx)} >Ready</button>
+                                                <button className="song_status btn btn-lg" onClick={(e) => handleClickNeedsWork(e, idx)} style={style1}>Needs Work</button>
+                                                <button className="song_status btn btn-outline-dark" onClick={(e) => handleClickReady(e, idx)} >Ready</button>
 
-                                                <button onClick={(e) => handleClickNew(e, idx)} >New</button></td> :
+                                                <button className="song_status btn btn-outline-dark" onClick={(e) => handleClickNew(e, idx)} >New</button></td> :
 
                                             (s.status === "finished" ?
 
                                                 <td>
 
-                                                    <button >Needs Work</button>
-                                                    <button onClick={(e) => handleClickReady(e, idx)}>Ready</button>
+                                                    <button className="song_status" >Needs Work</button>
+                                                    <button className="song_status" onClick={(e) => handleClickReady(e, idx)}>Ready</button>
 
-                                                    <button style={style1}>New</button>
+                                                    <button className="song_status" style={style1}>New</button>
                                                 </td> :
 
                                                 (s.status === "ready" ?
                                                     <td>
 
-                                                        <button onClick={(e) => handleClickNeedsWork(e, idx)}>Needs Work</button>
-                                                        <button onClick={(e) => handleClickReady(e, idx)} style={style2}>Ready</button>
+                                                        <button className="song_status btn btn-outline-dark" onClick={(e) => handleClickNeedsWork(e, idx)}>Needs Work</button>
+                                                        <button className="song_status btn btn-lg" onClick={(e) => handleClickReady(e, idx)} style={style2}>Ready</button>
 
-                                                        <button onClick={(e) => handleClickNew(e, idx)} >New</button>
+                                                        <button className="song_status btn btn-outline-dark" onClick={(e) => handleClickNew(e, idx)} >New</button>
                                                     </td> : "")))
 
 

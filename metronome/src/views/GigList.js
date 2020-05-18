@@ -57,9 +57,9 @@ const GigList = ({ props }) => {
                         <table className="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th >Event</th>
-                                    <th>Date</th>
-                                    <th className="gig_names_style">Time</th>
+                                    <th className="gig_table_header">Event</th>
+                                    <th className="gig_table_header">Date</th>
+                                    <th className="gig_table_header">Time</th>
                                 </tr>
 
                             </thead>
@@ -69,9 +69,9 @@ const GigList = ({ props }) => {
                                     gigs.map((p, idx) => {
                                         return (
                                             <tr key={idx}>
-                                                <td ><Link className="gig_names_style" classname="gig_names_style" to={`/gigs/${p._id}`}>{p.event}</Link></td>
-                                                <td className="gig_names_style">{p.date}</td>
-                                                <td className="gig_names_style">{p.time}</td>
+                                                <td ><Link className="gig_table_data" classname="gig_names_style" to={`/gigs/${p._id}`}>{p.event}</Link></td>
+                                                <td className="gig_table_data">{p.date}</td>
+                                                <td className="gig_table_data">{p.time}</td>
                                             </tr>
                                         );
                                     }

@@ -67,8 +67,43 @@ height: 100vh;
 color: red;
 }
 
-.gig_names_style{
+.gig_table_data{
+    color: black;
+    font-weight: 700;        
+    font-size: 125%;
+    opacity: 0.7;
+}
+
+.gig_table_header{
     color: black;
     font-weight: 900;        
     font-size: 150%;
+}
+
+.gig_page_divider{
+    border-right: solid black 2px;
+}
+
+.container-fluid{
+    height: 100vh;
+}
+
+.remove_gig_button{
+    position:absolute;
+    bottom: 2%;
+    
+}
+
+.gig_info_row{
+    height: 70vh;
+}
+
+.gig_comment{
+    border-radius: 15px;
+    width: 75%;
+}
+
+.song_status{
+    margin-right: 5px;
+    margin-left:5px;
 }
