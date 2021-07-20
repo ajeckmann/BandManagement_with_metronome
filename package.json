@@ -15,6 +15,6 @@
     "express": "^4.17.1",
     "mongoose": "^5.9.1",
     "mongoose-unique-validator": "^2.0.3",
-    "react-native": "^0.61.5"
+    "react-native": "^0.62.3"
   }
 }
